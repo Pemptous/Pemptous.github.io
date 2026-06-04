@@ -1,15 +1,14 @@
-import json
 from database import Database
 from my_database import myDatabase as myDatabaseString
 from pyscript import web, when
 
-import base64, json
+import base64
 
-def decrypt(token: str, password: str) -> str:
+def b(token: str, a: str) -> str:
     token = token.strip()
     token += "=" * (-len(token) % 4)
     xored = base64.b64decode(token.encode("ascii"))
-    key_bytes = password.encode("utf-8")
+    key_bytes = a.encode("utf-8")
     key = (key_bytes * (len(xored) // len(key_bytes) + 1))[:len(xored)]
     return bytes(a ^ b for a, b in zip(xored, key)).decode("utf-8")
 
@@ -29,7 +28,7 @@ def printf(text="", end="\n"):
 
 def init():
     global database
-    database = Database(decrypt(myDatabaseString,"bismillah"))
+    database = Database(b(myDatabaseString,"bismillah"))
     printf("Hey there! Imma try to guess which friend of Panos' you're thinking of.\n")
 
     printf('The friends which currently exist in the database are:')
@@ -44,6 +43,9 @@ def ask_question():
     printf()
 
     current_trait = database.best_request()
+    if current_trait == -1:
+        printf("I can't figure it out! You don't know way too much things 'bout them.")
+        return 
     question = f"{current_trait} (yes/no/dunno)? " # STRAIGHT UP QUESTION
 
     printf(question, end=" --> ")
@@ -67,7 +69,7 @@ def do_something_with_the_answer(answer):
 
         awaiting_text = False
 
-        if left == 0: printf("No results! You probably entered false information about your character.")
+        if left == 0: printf("I can't figure it out! You don't know way too much things 'bout them.")
         elif left == 1:
             if guess != "Yours Truly":
                 printf(f"*HIS* friend you are thinking of must be: {guess}!")
