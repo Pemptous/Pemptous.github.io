@@ -1,0 +1,7 @@
+{
+    "packages": [],
+    "files": {
+        "./database.py": "./database.py",
+        "./my_database.py": "./my_database.py"
+    }
+}

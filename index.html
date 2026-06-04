@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>  
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+        <title>Panos' Akinator</title>
+        <!-- <link rel="stylesheet" href="https://pyscript.net/releases/2026.3.1/core.css"> -->
+        <script type="module" src="https://pyscript.net/releases/2026.3.1/core.js"></script>
+    </head>
+  
+    <body>
+        <h1>Panos' Akinator</h1>
+        <p>Use this webstite to guess yourself, me or stalk my friends. Your choice.</p>
+        <br>
+
+        <div id="output" style="background-color: black; color:bisque; white-space: pre;"><i>### BEGINNING OF SCRIPT ###</i><br></div>
+        <p style="font-size: small;">NOTE: This is the terminal (text-based interface). The place where you input is written down and the output of the program gets printed. </p>
+        <br>
+
+        <input type="text" id="inputted" placeholder="Answer the program's questions here." />
+        <button id="button">Send input</button>
+        
+        <script type="py" src="./main.py" config="./pyscript.json"></script>
+    </body>
+</html>
