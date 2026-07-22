@@ -26,8 +26,8 @@ def printf(text="", end="\n"):
     if output_div.innerText.count('\n') > HARD_LIMIT:
         output_div.innerText = output_div.innerText[output_div.innerText.index('\n')+1:]
         
-def quest(n, text):
-    question_div.innerText = f"{n}. {text}"
+def quest(text):
+    question_div.innerText = text
 
 def init():
     global database, HARD_LIMIT
@@ -48,11 +48,11 @@ def ask_question():
 
     current_trait = database.best_request()
     if current_trait == -1:
-        quest("NOT FOUND", "I can't figure it out! You don't know enough about them.")
+        quest("I can't figure it out! You don't know enough about them.")
         return 
-    question = f"{current_trait}?" # STRAIGHT UP QUESTION
 
-    quest(nquestion, question)
+
+    quest(f"{nquestion}. current_trait")
     nquestion += 1
     awaiting_text = True
 
@@ -71,11 +71,14 @@ def do_something_with_the_input(answer):
 
         awaiting_text = False
 
-        if left == 0: quest("NOT FOUND", "I can't figure it out! Something doesn't add up.")
+        if left == 0:
+            quest("I can't figure it out! Something doesn't add up.")
+            printf("0 characters left.")
         elif left == 1:
+            printf("1 character left.")
             if guess != "Yours Truly":
-                quest("FOUND", f"*HIS* friend you are thinking of must be: {guess}!")
-            else: quest(":)","You are thinking of me. So kawai (nga)")
+                quest(f"*HIS* friend you are thinking of must be: {guess}!")
+            else: quest("You are thinking of me. So kawai (nga)")
         else:
             printf(f"There are {left} characters left")
             ask_question()
