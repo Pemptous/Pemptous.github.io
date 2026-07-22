@@ -11,10 +11,9 @@ class Database:
 
     def update(self, trait, answer):
         self.current_characters = [char for char in self.current_characters if char['traits'].get(trait) == answer]
-
-        characters_left = len(self.current_characters)
-        if len(self.traits) == 0: return (0, self.current_characters[0]["name"])
-        return (characters_left, self.current_characters[0]["name"])
+    characters_left = len(self.current_characters)
+    if characters_left == 0: return (0, None)
+    return (characters_left, self.current_characters[0]["name"])
         
 
     def best_request(self):

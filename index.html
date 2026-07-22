@@ -12,13 +12,19 @@
         <h1>Panos' Akinator</h1>
         <p>Use this webstite to guess yourself, me or stalk my friends. Your choice.</p>
         <br>
-
-        <div id="output" style="background-color: black; color:bisque; white-space: pre;"><i>### BEGINNING OF SCRIPT ###</i><br></div>
-        <p style="font-size: small;">NOTE: This is the terminal (text-based interface). The place where you input is written down and the output of the program gets printed. </p>
+        
+        <div id="box"><i>### SCRIPT INITIALIZATION ###</i><br></div>
+        <p style="font-size: 1.5em;">QUESTION:</p>
+        
+        <div id="console"></div>
+        
         <br>
-
-        <input type="text" id="inputted" placeholder="Answer the program's questions here." />
-        <button id="button">Send input</button>
+        
+        <div style="display: flex; gap: 5px;">
+            <button id="yes" style="background-color: green; color: white;">YES</button>
+            <button id="dunno" style="background-color: yellow; color: white;">DUNNO</button>
+            <button id="no" style="background-color: red; color: white;">NO</button>
+        </div>
         
         <script type="py" src="./main.py" config="./pyscript.json"></script>
     </body>

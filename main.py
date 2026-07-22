@@ -15,43 +15,48 @@ def b(token: str, a: str) -> str:
 awaiting_text = False
 database = None
 current_trait = None
-HARD_LIMIT = 29
+nquestion = 1
+HARD_LIMIT = 0
 
-input_text = web.page["inputted"]
-
-output_div = web.page["output"]
+question_div = web.page["box"]
+output_div = web.page["console"]
 def printf(text="", end="\n"):
     text = str(text)
     output_div.innerText += text + end
     if output_div.innerText.count('\n') > HARD_LIMIT:
         output_div.innerText = output_div.innerText[output_div.innerText.index('\n')+1:]
+        
+def quest(n, text):
+    question_div.innerText = f"{n}. {text}"
 
 def init():
-    global database
+    global database, HARD_LIMIT
+    
     database = Database(b(myDatabaseString,"bismillah"))
+    HARD_LIMIT = len(database.names) + 4
     printf("Hey there! Imma try to guess which friend of Panos' you're thinking of.\n")
 
     printf('The friends which currently exist in the database are:')
     for name in database.names:
         printf(" -   " + name)
-    #printf()
+    printf()
 
     ask_question()
 
 def ask_question():
-    global database, awaiting_text, current_trait
-    printf()
+    global database, awaiting_text, current_trait, nquestion
 
     current_trait = database.best_request()
     if current_trait == -1:
-        printf("I can't figure it out! You don't know way too much things 'bout them.")
+        quest("NOT FOUND", "I can't figure it out! You don't know enough about them.")
         return 
-    question = f"{current_trait} (yes/no/dunno)? " # STRAIGHT UP QUESTION
+    question = f"{current_trait}?" # STRAIGHT UP QUESTION
 
-    printf(question, end=" --> ")
+    quest(nquestion, question)
+    nquestion += 1
     awaiting_text = True
 
-def do_something_with_the_answer(answer):
+def do_something_with_the_input(answer):
     global database, awaiting_text, current_trait
 
     match answer:
@@ -60,43 +65,34 @@ def do_something_with_the_answer(answer):
         case "dunno":
             database.traits.remove(current_trait)
             answer = None
-        case _:
-            printf("Didn't get that. Repeat:", end=" --> ")
-            return
 
     if answer != None:
         left, guess = database.update(current_trait, answer)
 
         awaiting_text = False
 
-        if left == 0: printf("I can't figure it out! You don't know way too much things 'bout them.")
+        if left == 0: quest("NOT FOUND", "I can't figure it out! Something doesn't add up.")
         elif left == 1:
             if guess != "Yours Truly":
-                printf(f"*HIS* friend you are thinking of must be: {guess}!")
-            else: printf("You are thinking of me. So kawai (nga)")
+                quest("FOUND", f"*HIS* friend you are thinking of must be: {guess}!")
+            else: quest(":)","You are thinking of me. So kawai (nga)")
         else:
             printf(f"There are {left} characters left")
             ask_question()
     else:
         ask_question()
 
-def do_something_with_the_input():
-    inputted_text = input_text.value
-    if inputted_text and awaiting_text:
-        printf(inputted_text)
-        input_text.value = ""
+@when("click", "#yes")
+def yes(event):
+    do_something_with_the_input("yes")
 
-        answer = inputted_text.strip().lower()
-        do_something_with_the_answer(answer)
-
-@when("click", "#button")
-def translate_english(event):
-    do_something_with_the_input()
-
-@when("keydown", "#inputted")
-def handle_enter(event):
-    if event.key == "Enter":
-        do_something_with_the_input()
+@when("click", "#dunno")
+def dunno(event):
+    do_something_with_the_input("dunno")
+    
+@when("click", "#no")
+def no(event):
+    do_something_with_the_input("no")
 
 if __name__ == "__main__":
     init()
