@@ -52,7 +52,7 @@ def ask_question():
         return 
 
 
-    quest(f"{nquestion}. current_trait")
+    quest(f"{nquestion}. {current_trait}")
     nquestion += 1
     awaiting_text = True
 
