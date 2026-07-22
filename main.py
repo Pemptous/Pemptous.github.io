@@ -16,15 +16,17 @@ awaiting_text = False
 database = None
 current_trait = None
 nquestion = 1
-HARD_LIMIT = 0
+#HARD_LIMIT = 0
 
 question_div = web.page["box"]
 output_div = web.page["console"]
 def printf(text="", end="\n"):
     text = str(text)
     output_div.innerText += text + end
+    '''
     if output_div.innerText.count('\n') > HARD_LIMIT:
         output_div.innerText = output_div.innerText[output_div.innerText.index('\n')+1:]
+    '''
         
 def quest(text):
     question_div.innerText = text
@@ -33,7 +35,7 @@ def init():
     global database, HARD_LIMIT
     
     database = Database(b(myDatabaseString,"bismillah"))
-    HARD_LIMIT = len(database.names) + 4
+    #HARD_LIMIT = len(database.names) + 4
     printf("Hey there! Imma try to guess which friend of Panos' you're thinking of.\n")
 
     printf('The friends which currently exist in the database are:')
